@@ -1,4 +1,4 @@
-What we’re building
+What I building
 
 I want a little weather / air-quality sentinel on the balcony. This node quietly monitors the outside air (VOC, eCO₂, general air-quality) plus environmental data. Then, inside the house, another ESP shows the latest readings on a screen — so my girlfirend stop asking questions about the weather outside.
 
