@@ -16,11 +16,11 @@ Why This Setup Works
 
 Optimized Power Strategy: The key to long battery life. The ESP microcontroller on the balcony node sleeps deeply between readings. Crucially, the ENS160 sensor's sleep mode is also leveraged to minimize average current draw.
 ![ENS160 Sleep Mode Diagram](images/sleep_sheet.png)
-*Diagram from the ENS160 datasheet illustrating the low-power sleep mode used in this project.*
+*Diagram from the ENS160 datasheet illustrating the low-power sleep mode*
 
 🤔 Design Philosophy & Trade-Offs
 
-A significant part of this project was planning the power management strategy before writing a single line of code to avoid common pitfalls.
+A significant part of this project is planning the power management strategy before writing a single line of code to avoid common pitfalls.
 The ENS160 was chosen for its rich data (VOC, eCO₂, AQI), but it introduces complexity with its required warm-up time and baseline tracking.
 
 Power Strategy Analysis
