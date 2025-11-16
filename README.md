@@ -1,55 +1,55 @@
-A low-power, wireless sensor system designed to monitor outdoor air quality and environmental data, displaying the readings on an indoor unit.
+# 🌳 Air Telemetry: Giving My Balcony a Mind
 
-🎯 Project Overview
+### *A low-power, wireless sensor system to monitor outdoor air quality, humidity and temperature*
 
-I aim to build a discreet "sentinel" for my balcony that quietly monitors the outside air for VOC (Volatile Organic Compounds), eCO₂, and a general Air Quality Index (AQI). The data is wirelessly transmitted to a display unit inside the house, providing at-a-glance information to answer the eternal question of my girlfriend: "What's the weather like outside?"
+## 🎯 The Big Idea: Answering the Eternal Question
 
-This project focuses on a robust, battery-friendly architecture from the ground up.
+We've all been there: "What's the weather like outside?" But I wanted to answer a much deeper question: **"What's the *air* like outside?"**
 
+This project, "Air Telemetry," is my mission to build a discreet, battery-powered spy for my balcony—a "Sentinel"—that quietly monitors the outside air and beams the data to a friendly display inside the house.
 
-Why This Setup Works ?
+I'm aiming for something that doesn't just work, but keeps working for **months on a single charge.** No one wants to change batteries every week!
 
-Optimized Power Strategy: The key to long battery life. The ESP microcontroller on the balcony node sleeps deeply between readings. Crucially, the ENS160 sensor's sleep mode is also leveraged to minimize average current draw.
+### What We're Measuring:
+* **The Invisible Stuff:** VOCs (Volatile Organic Compounds) & eCO₂
+* **The Big Picture:** General Air Quality Index (AQI)
+* **The Comfort Check:** Temperature and Humidity 
+
+---
+
+## 🤯 My Obsession: The Power Battle Plan
+
+The real challenge here isn't just *getting* the data; it's making the battery last forever. I decided to tackle power management **before** writing a single line of code, because, frankly, power pitfalls ruin projects.
+
+**My goal:** Beat the vampire drain. I'm fighting to keep the average current draw as low as possible—we're talking microamperes!
+
+### 🛌 Why We Don't Just Turn Everything Off
+
+I had two choices for the power strategy, but one was a clear winner.
+
+| Option | Strategy | Why I Rejected It (or Chose It!) |
+| :--- | :--- | :--- |
+| **A: Full Power-Cycling** | Turn the sensor AND the ESP completely OFF. | The specialized ENS160 sensor *hates* this. It needs a long time to warm up and re-establish its baseline, wasting a ton of power in a high-current "peak" phase every time. |
+| **B: Strategic Sleep (The Winner!)** | Keep the sensor powered (but in its *own* sleep mode), and put the ESP into Deep Sleep. | **It's genius!** The sensor maintains its internal warm-up and calibration state. When the ESP wakes, the data is instantly ready, and we go back to sleep fast. Maximum battery life achieved! |
+
 
 ![ENS160 Sleep Mode Diagram](images/sleep_sheet.png)
 *Diagram from the ENS160 datasheet illustrating the low-power sleep mode*
+---
 
-🤔 Design Philosophy & Trade-Offs
+## 🚀 The Tech Stack for Speed & Efficiency
 
-A significant part of this project is planning the power management strategy before writing a single line of code to avoid common pitfalls.
+* **The Sender (Sentinel):** A stripped-down ESP (TBD model) running super-efficient **ESP-NOW**. We send the data packet lightning-fast—no slow, power-hungry Wi-Fi connection attempts!
+* **The Sensor:** The **ENS160** for its rich data set (VOC/eCO₂).
+* **The Receiver (Indoor):** An ESP-based display unit. (The strategy is still TBD: always listening, or a synchronized-wakeup?)
 
-The ENS160 was chosen for its rich data (VOC, eCO₂, AQI), but it introduces complexity with its required warm-up time and baseline tracking.
+---
 
-Power Strategy Analysis
+## ✅ What's Next on the Workbench
 
-Two primary power management options were considered:
+I'm moving from theory to hardware, but a few key decisions need locking down.
 
-**Option A**: Full Power-Cycling: Turning the sensor and ESP completely off between readings.
-
-Con: High inrush current during wake-up and the ENS160 requires a significant warm-up time before accurate readings, leading to high peak power drain.
-
------------------------
-**Option B**: Strategic Sleep (Chosen Approach): Keeping the ENS160 sensor powered continuously to maintain its baseline and warm state, while putting the ESP into deep sleep.
-
-Pro: The ENS160 can be placed into a low-power mode itself, resulting in a much lower average current and more stable readings immediately upon wake-up.
-
-
-📋 Immediate Next Steps:
-
-**Finalize Operational Parameters**: Decide on the measurement interval (e.g., every 5 or 10 minutes).
-
-**Component Selection** : Finalize ESP board models, battery size, voltage regulator, and weather-proofing for the balcony enclosure.
-
-**Synchronization**: I am still not sure about how to make this best for the battery life. Trying not to lost even 10 μA without losing my mind.
-
-**Power Budget Analysis**: Calculate estimated battery life based on the chosen sleep intervals and measured current consumption.
-
-**Protocol Definition**: Define the structure of the ESP-NOW data packet (to include TVOC, eCO₂, AQI, timestamp, sensor status flags).
-
-🚀 Why This Architecture Matters
-
-By carefully planning the sleep/wake cycles and wireless communication strategy from the start, this project aims to be:
-
-Power-Efficient: Maximizing battery life on the balcony unit.
-Reliable: Ensuring data is successfully transmitted and displayed.
-Maintainable: A clean separation of concerns between the sensor and display nodes.
+* [ ] **Pick the "Time Gate":** How often is enough? 5 minutes? 10 minutes? I need to pick an interval that balances data freshness and battery longevity.
+* [ ] **Finalize the Shopping List:** Lock in the exact ESP boards, find the most *ridiculously* efficient voltage regulator I can, and plan the final weather-proofing for the balcony.
+* [ ] **Do The Math:** Crunch the **Power Budget Analysis** with real-world measurements to confidently say: "This thing will last $X$ months."
+* [ ] **Define the Data Blueprint:** Finalize the exact, tiny data packet we'll send over ESP-NOW (e.g., `AQI`, `TVOC_val`, `eCO2_val`, `Sensor_Status`, `Time`.
