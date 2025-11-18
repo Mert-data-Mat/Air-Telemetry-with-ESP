@@ -49,7 +49,7 @@ I had two choices for the power strategy, but one was a clear winner.
 
 I'm moving from theory to hardware, but a few key decisions need locking down.
 
-* [ ] **Pick the "Time Gate":** How often is enough? 5 minutes? 10 minutes? I need to pick an interval that balances data freshness and battery longevity.
-* [ ] **Finalize the Shopping List:** Lock in the exact ESP boards, find the most *ridiculously* efficient voltage regulator I can, and plan the final weather-proofing for the balcony.
+* [x] **Pick the "Time Gate":** How often is enough? Decided to request the data every hour.
+* [x] **Finalize the Shopping List:** ✅ DONE
 * [ ] **Do The Math:** Crunch the **Power Budget Analysis** with real-world measurements to confidently say: "This thing will last $X$ months."
 * [ ] **Define the Data Blueprint:** Finalize the exact, tiny data packet we'll send over ESP-NOW (e.g., `AQI`, `TVOC_val`, `eCO2_val`, `Sensor_Status`, `Time`.
